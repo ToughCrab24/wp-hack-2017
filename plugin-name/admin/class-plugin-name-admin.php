@@ -96,12 +96,19 @@ class Plugin_Name_Admin {
 		 * class.
 		 */
 
-		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/plugin-name-admin.js', array( 'jquery' ), $this->version, false );
+		wp_enqueue_script(
+		    'trackingjs',
+            '//cdnjs.cloudflare.com/ajax/libs/tracking.js/1.1.3/tracking-min.js',
+            array( 'jquery' ),
+            $this->version,
+            true
+        );
 
-	}
+        wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/plugin-name-admin.js', array( 'jquery' ), $this->version, true );
+    }
 
     public function add_menu_pages() {
-        add_menu_page('Facials', 'Facial Title', 'add_users', 'facial-admin');
+        add_menu_page('2Face', '2 Face', 'add_users', 'plugin-name/admin/index.php');
     }
 
 }
