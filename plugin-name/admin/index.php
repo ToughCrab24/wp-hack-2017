@@ -18,7 +18,15 @@ echo 'You are: ' . $current_user->user_login . '<br />';
 ?>
 </div>
 
-<video id="myVideo" width="400" height="300" preload autoplay loop muted></video>
 <br />
-<button id="start" class="btn btn-primary">Start Tracking</button>
-<button id="stop" class="btn btn-warning">Stop Tracking</button>
+
+<div id="results">Your captured image will appear here...</div>
+
+<h1>WebcamJS Test Page</h1>
+<h3>Demonstrates simple 320x240 capture &amp; display</h3>
+
+<div id="my_camera"></div>
+
+<form>
+    <input type=button value="Take Snapshot" onClick="take_snapshot()">
+</form>

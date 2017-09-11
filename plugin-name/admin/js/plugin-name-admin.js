@@ -28,30 +28,23 @@
 	 * Although scripts in the WordPress core, Plugins and Themes may be
 	 * practising this, we should strive to set a better example in our own work.
 	 */
-    var colors = new tracking.ColorTracker(['magenta', 'cyan', 'yellow']);
 
-    colors.on('track', function(event) {
-        if (event.data.length === 0) {
-            // No colors were detected in this frame.
-			console.log("hup")
-        } else {
-            event.data.forEach(function(rect) {
-                console.log(rect.x, rect.y, rect.height, rect.width, rect.color);
-            });
-        }
+    Webcam.set({
+        width: 320,
+        height: 240,
+        image_format: 'jpeg',
+        jpeg_quality: 90
     });
+    Webcam.attach( '#my_camera' );
 
-    var trackerTask = tracking.track('#myVideo', colors, { camera: true });
-
-    var stopTracking = function() {
-    	trackerTask.stop()
-	};
-
-	var startTracking =  function() {
-    	trackerTask.run()
-	};
-
-	$('#start').on('click', startTracking.bind(trackerTask));
-	$('#stop').on('click', stopTracking.bind(trackerTask))
+    window.take_snapshot=function() {
+        // take snapshot and get image data
+        Webcam.snap( function(data_uri) {
+            // display results in page
+            document.getElementById('results').innerHTML =
+                '<h2>Here is your image:</h2>' +
+                '<img src="'+data_uri+'"/>';
+        } );
+    }
 
 })( jQuery );
