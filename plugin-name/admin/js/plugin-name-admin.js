@@ -41,16 +41,17 @@
         }
     });
 
-    window.trackerTask = tracking.track('#myVideo', colors, { camera: true });
+    var trackerTask = tracking.track('#myVideo', colors, { camera: true });
 
-
-    window.stopTracking = function() {
-    	window.trackerTask.stop()
+    var stopTracking = function() {
+    	trackerTask.stop()
 	};
 
-	window.startTracking =  function() {
-    	window.trackerTask.start()
+	var startTracking =  function() {
+    	trackerTask.run()
 	};
 
+	$('#start').on('click', startTracking.bind(trackerTask));
+	$('#stop').on('click', stopTracking.bind(trackerTask))
 
 })( jQuery );
