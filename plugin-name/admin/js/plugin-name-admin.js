@@ -28,5 +28,29 @@
 	 * Although scripts in the WordPress core, Plugins and Themes may be
 	 * practising this, we should strive to set a better example in our own work.
 	 */
+    var colors = new tracking.ColorTracker(['magenta', 'cyan', 'yellow']);
+
+    colors.on('track', function(event) {
+        if (event.data.length === 0) {
+            // No colors were detected in this frame.
+			console.log("hup")
+        } else {
+            event.data.forEach(function(rect) {
+                console.log(rect.x, rect.y, rect.height, rect.width, rect.color);
+            });
+        }
+    });
+
+    window.trackerTask = tracking.track('#myVideo', colors, { camera: true });
+
+
+    window.stopTracking = function() {
+    	window.trackerTask.stop()
+	};
+
+	window.startTracking =  function() {
+    	window.trackerTask.start()
+	};
+
 
 })( jQuery );
