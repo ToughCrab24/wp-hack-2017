@@ -13,3 +13,5 @@ wordpress-bash:
 	${DC_FLAGS} exec wordpress bash
 mysql-bash:
 	${DC_FLAGS} exec mysql bash
+face-bash:
+	${DC_FLAGS} exec facerecognition bash

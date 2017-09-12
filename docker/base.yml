@@ -1,5 +1,8 @@
 version: '3.1'
 
+volumes:
+  face_db_data:
+
 services:
 
   wordpress:
@@ -24,3 +27,16 @@ services:
       - 8081:80
     environment:
         PMA_HOST: mysql
+
+  facerecognition:
+    image: hackers/faces
+    command: ./wait.sh -s db:5432 -- ./run.sh python manage.py runserver 0.0.0.0:8000
+    environment:
+      - DJANGO_SETTINGS_MODULE=config.settings.dev
+    ports:
+      - 80:8000
+
+  db:
+    image: postgres
+    volumes:
+      - face_db_data:/var/lib/postgresql/data
