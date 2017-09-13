@@ -47,6 +47,8 @@
 		})
 	};
 
+	window.loginAttempts = 0;
+
     window.verifyYourFace = function() {
         Webcam.snap(function (data_uri) {
             $.ajax({
@@ -68,22 +70,43 @@
                 },
                 success: function(data) {
 
+                    var msg = new SpeechSynthesisUtterance();
+                    var voices = window.speechSynthesis.getVoices();
+                    msg.voice = voices[0]; // Note: some voices don't support altering params
+                    msg.voiceURI = 'native';
+                    msg.volume = 1; // 0 to 1
+                    msg.rate = 1; // 0.1 to 10
+                    msg.pitch = 1; //0 to 2
+                    msg.lang = 'en-US';
+
                     document.getElementById('results').innerHTML =
                         '<div>' +
                             '<img id="face_image" src="'+data_uri+'"/>' +
                         '</div>';
 
                     if(data.is_match && data.matches[0].face_id === $('#face_id').html()) {
+                        window.loginAttempts = 0;
                         $('#not_found_face_box').addClass('hidden');
                         $('#found_face_box').removeClass('hidden');
                         $('#found_face_id').html(data.matches[0].face_id);
                         $('#found_face_name').html(data.matches[0].face_name);
                         $('#found_face_box .message').html(data.message);
+
+                        msg.text = data.matches[0].face_name + ' is authorized';
+                        speechSynthesis.speak(msg);
                     } else if(data.is_match && data.matches[0].face_id !== $('#face_id').html()) {
+                        window.loginAttempts++;
                         $('#found_face_box').addClass('hidden');
                         $('#not_found_face_box').removeClass('hidden');
                         $('#not_found_face_box .message').html(
                             '<h3>' + data.matches[0].face_name + ' is NOT authorized</h3>');
+
+                        if(window.loginAttempts > 2) {
+                            msg.text = "I'm tired of looking at your face, " + data.matches[0].face_name.split(" ")[0];
+                        } else {
+                            msg.text = data.matches[0].face_name + ' is NOT authorized';
+                        }
+                        speechSynthesis.speak(msg);
                     } else {
                         $('#found_face_box').addClass('hidden');
                         $('#not_found_face_box').removeClass('hidden');
