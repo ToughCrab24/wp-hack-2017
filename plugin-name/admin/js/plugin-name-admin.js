@@ -41,14 +41,50 @@
                 console.log(data);
             },
             success: function(data) {
-                alert(1);
                 console.log(data);
             },
             type: 'POST'
 		})
 	};
 
+    window.verifyYourFace = function() {
+        Webcam.snap(function (data_uri) {
+            $.ajax({
+                url: 'http://localhost:80/api/recognition/',
+                data: {
+                    'face_image': data_uri
+                },
+                error: function(data) {
+                    console.log(data);
+                },
+                success: function(data) {
+                    var matchesHTML = "";
+                    // data.matches.forEach(function(match) {
+                    //     var url = 'http://localhost' + match.face_image;
+                    //     var img = '<img class="face_images" src="'+url+'" />';
+                    //
+                    //     var html = '<div>' + img + '</div>';
+                    //
+                    //     matchesHTML += html;
+                    // });
+
+                    document.getElementById('results').innerHTML =
+                        '<div>' +
+                            '<img id="face_image" src="'+data_uri+'"/>' +
+                        '</div>' +
+                        '<div>' +
+                            '<span id="face_message">' + data.message + '<span/>' +
+                        '</div>' +
+                        matchesHTML;
+                    console.log(data);
+                },
+                type: 'POST'
+            })
+        });
+    };
+
 	$('#takeSnapshot').on('click', take_snapshot);
+	$('#verifyFace').on('click', verifyYourFace);
 
     $('#submitFace').on('click', function(e) {
         e.preventDefault();

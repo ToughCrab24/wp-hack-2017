@@ -41,7 +41,7 @@ echo '</div>';
     </div>
     <div class="col-md-4">
         <form>
-            <input class="btn btn-primary" id="submitFace" type=button value="Submit selfie">
+            <input class="btn btn-primary" id="submitFace" type=button value="Submit Selfie">
             <input class="btn btn-primary" id="verifyFace" type=button value="Verify its you">
         </form>
     </div>
