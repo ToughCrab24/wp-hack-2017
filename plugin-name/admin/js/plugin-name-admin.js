@@ -47,7 +47,8 @@
 		})
 	};
 
-	window.loginAttempts = 0;
+	window.failedLoginAttempts = 0;
+    window.previousFaceId = null;
 
     window.verifyYourFace = function() {
         Webcam.snap(function (data_uri) {
@@ -85,7 +86,8 @@
                         '</div>';
 
                     if(data.is_match && data.matches[0].face_id === $('#face_id').html()) {
-                        window.loginAttempts = 0;
+                        window.failedLoginAttempts = 0;
+                        window.previousFaceId = null;
                         $('#not_found_face_box').addClass('hidden');
                         $('#found_face_box').removeClass('hidden');
                         $('#found_face_id').html(data.matches[0].face_id);
@@ -95,15 +97,16 @@
                         msg.text = data.matches[0].face_name + ' is authorized';
                         speechSynthesis.speak(msg);
                     } else if(data.is_match && data.matches[0].face_id !== $('#face_id').html()) {
-                        window.loginAttempts++;
+                        window.failedLoginAttempts++;
                         $('#found_face_box').addClass('hidden');
                         $('#not_found_face_box').removeClass('hidden');
                         $('#not_found_face_box .message').html(
                             '<h3>' + data.matches[0].face_name + ' is NOT authorized</h3>');
 
-                        if(window.loginAttempts > 2) {
+                        if(window.failedLoginAttempts > 2 && window.previousFaceId === data.matches[0].face_id) {
                             msg.text = "I'm tired of looking at your face, " + data.matches[0].face_name.split(" ")[0];
                         } else {
+                            window.previousFaceId = data.matches[0].face_id;
                             msg.text = data.matches[0].face_name + ' is NOT authorized';
                         }
                         speechSynthesis.speak(msg);
