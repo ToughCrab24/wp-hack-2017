@@ -5,8 +5,14 @@
 
 #userInfo {
     border: dashed black thick;
-    width: 50%;
+
 }
 
-#results { float:right; margin:20px; padding:20px; border:1px solid; background:#ccc; }
+#my_camera {
+    display: inline-block;
+}
+
+#results {
+    display: inline-block;
+}
 

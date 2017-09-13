@@ -17,13 +17,33 @@ echo '</div>';
 
 <br />
 
-
-<div id="results">Your captured image will appear here...</div>
-
-
-<div id="my_camera"></div>
-
-<form>
-    <input type=button value="Take Snapshot" onClick="take_snapshot()">
-</form>
+<div class="row col-md-12">
+    <div class="col-md-6">
+        <h2 class="pull-left">Take a snap</h2>
+    </div>
+    <div class="col-md-6">
+        <h2>Your face here</h2>
+    </div>
+</div>
+<div class="row col-md-12">
+    <div class="col-md-4">
+        <div id="my_camera" class="row"></div>
+    </div>
+    <div class="col-md-4">
+        <div id="results" class="row">Your captured image will appear here...</div>
+    </div>
+</div>
+<div class="row col-md-12">
+    <div class="col-md-4">
+        <form>
+            <input class="btn btn-primary" id="takeSnapshot" type=button value="Take Snapshot">
+        </form>
+    </div>
+    <div class="col-md-4">
+        <form>
+            <input class="btn btn-primary" id="submitFace" type=button value="Submit selfie">
+            <input class="btn btn-primary" id="verifyFace" type=button value="Verify its you">
+        </form>
+    </div>
+</div>
 
