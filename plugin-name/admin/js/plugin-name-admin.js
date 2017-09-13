@@ -55,27 +55,42 @@
                     'face_image': data_uri
                 },
                 error: function(data) {
+
+                    document.getElementById('results').innerHTML =
+                        '<div>' +
+                        '<img id="face_image" src="'+data_uri+'"/>' +
+                        '</div>';
+
+                    $('#found_face_box').addClass('hidden');
+                    $('#not_found_face_box').removeClass('hidden');
+                    $('#not_found_face_box .message').html("We cannot verify this face");
                     console.log(data);
                 },
                 success: function(data) {
-                    var matchesHTML = "";
-                    // data.matches.forEach(function(match) {
-                    //     var url = 'http://localhost' + match.face_image;
-                    //     var img = '<img class="face_images" src="'+url+'" />';
-                    //
-                    //     var html = '<div>' + img + '</div>';
-                    //
-                    //     matchesHTML += html;
-                    // });
 
                     document.getElementById('results').innerHTML =
                         '<div>' +
                             '<img id="face_image" src="'+data_uri+'"/>' +
-                        '</div>' +
-                        '<div>' +
-                            '<span id="face_message">' + data.message + '<span/>' +
-                        '</div>' +
-                        matchesHTML;
+                        '</div>';
+
+                    if(data.is_match && data.matches[0].face_id === $('#face_id').html()) {
+                        $('#not_found_face_box').addClass('hidden');
+                        $('#found_face_box').removeClass('hidden');
+                        $('#found_face_id').html(data.matches[0].face_id);
+                        $('#found_face_name').html(data.matches[0].face_name);
+                        $('#found_face_box .message').html(data.message);
+                    } else if(data.is_match && data.matches[0].face_id !== $('#face_id').html()) {
+                        $('#found_face_box').addClass('hidden');
+                        $('#not_found_face_box').removeClass('hidden');
+                        $('#not_found_face_box .message').html(
+                            '<h3>' + data.matches[0].face_name + ' is NOT authorized</h3>');
+                    } else {
+                        $('#found_face_box').addClass('hidden');
+                        $('#not_found_face_box').removeClass('hidden');
+                        $('#not_found_face_box .message').html(data.message);
+                    }
+
+
                     console.log(data);
                 },
                 type: 'POST'
@@ -88,6 +103,10 @@
 
     $('#submitFace').on('click', function(e) {
         e.preventDefault();
+        var result = confirm("Are you sure this is you?");
+        if(!result)
+            return;
+
         submitKnownFace();
     });
 
